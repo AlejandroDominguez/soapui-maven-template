@@ -1,4 +1,4 @@
-soapui-test
+soapui-maven-template
 ========================
 
 This is an example project of running a simple mock webservice in SoapUI with a unit test suite.
