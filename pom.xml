@@ -1,0 +1,157 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>qa.soapui</groupId>
+  <artifactId>soapui-maven-template</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <!-- instructions based on http://www.soapui.org/Test-Automation/maven-2x.html -->
+
+  <!-- if necessary, filter for Jenkins report matching is: **/target/surefire-reports/*.xml  -->
+
+  <pluginRepositories>
+
+    <pluginRepository>
+      <id>eviware-soapui</id>
+      <url>http://www.soapui.org/repository/maven2/</url>
+    </pluginRepository>
+
+  </pluginRepositories>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+  	    <!--
+    <directory>target</directory>
+    <outputDirectory>target/classes</outputDirectory>
+    <finalName>${artifactId}-${version}</finalName>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
+    -->
+
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- <groupId>eviware</groupId>
+        <artifactId>maven-soapui-pro-plugin</artifactId>
+        <version>4.5.1</version> -->
+        <groupId>com.github.redfish4ktc.soapui</groupId>
+        <artifactId>maven-soapui-extension-plugin</artifactId>
+        <!-- extension plugin is from https://github.com/redfish4ktc/maven-soapui-extension-plugin -->
+        <version>4.5.1.4</version>
+        <dependencies>
+          <!-- Provide JDBC dependencies for Groovy script tasks. Currently the JDBC .jar needs to be located
+             in both bin/ext  and jre/lib/ext  in order to load the JDBC drivers.  I am hoping that by adding
+             this Maven dependency, that the jre/lib/ext location will no longer be required. I still need
+             to verify that fact and I will remove this comment after I do so. -->
+          <!--
+          <dependency>
+            <groupId>oracle.jdbc</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3.0</version>
+          </dependency>
+          <dependency>
+            <groupId>com.microsoft.sqlserver.jdbc</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.0</version>
+          </dependency>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+          </dependency>
+          -->
+          <dependency>
+            <groupId>fife</groupId>
+            <artifactId>rsyntaxtextarea</artifactId>
+            <version>2.0.1</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <projectFile>${basedir}/timeservice-soapui-project.xml</projectFile>
+          <host>http://${host.port}</host>
+          <outputFolder>${project.build.directory}/soapui-reports</outputFolder>
+          <exportAll>true</exportAll>
+          <reportFormat>HTML</reportFormat>
+          <coverage>true</coverage>
+          <printReport>true</printReport>
+          <junitReport>true</junitReport>
+          <testFailIgnore>true</testFailIgnore>
+          <settingsFile>${user.home}/soapui-settings.xml</settingsFile>
+          <endpoint>http://${host.port}/mockTimeServiceSOAP</endpoint>
+          <testSuite>${soapui.suite}</testSuite>
+          <testCase>RequestTime TestCase</testCase>
+          <mockService>MockService</mockService>
+          <noBlock>true</noBlock>              
+          <projectProperties>
+            <value>pmessage=Hello Project!</value>
+          </projectProperties>
+          <globalProperties>
+            <value>gmessage=Hello Global!</value>
+          </globalProperties>           
+          <soapuiProperties>
+            <property>
+              <name>soapui.logroot</name>
+              <value>${project.build.directory}/soapui-logs/</value>
+            </property>
+            <property>
+              <name>soapui.scripting.library</name>
+              <value>src/test/resources</value>
+            </property>
+          </soapuiProperties>
+        </configuration>        
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+  <!-- Profiles start here.  Select a profile by passing -Pprofilename as an arg to Maven -->
+  <profiles>
+
+    <profile>
+      <id>suite1</id>
+      <properties>
+        <host.port>127.0.0.1:8080</host.port>
+        <soapui.suite>Suite1</soapui.suite>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>suite2</id>
+      <properties>
+        <host.port>127.0.0.1:8080</host.port>
+        <soapui.suite>Suite2</soapui.suite>
+      </properties>
+    </profile>
+
+  </profiles>
+
+</project>
