@@ -21,5 +21,9 @@ mvn.bat
             -Psuite2 -Dhost.port=127.0.0.1:8088
 ```
 
+eclipse-soapui-plugin
+=======================
+Update site for Eclipse software installer:
+http://www.soapui.org/eclipse/update/site.xml 
 
 
